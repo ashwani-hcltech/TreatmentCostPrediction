@@ -8,9 +8,7 @@ from preprocess import (
 )
 
 from model import (
-    build_linear_regression,
-    build_lasso,
-    ridge_regression_model
+    get_model
 )
 
 from evaluate import (
@@ -23,27 +21,29 @@ from evaluate import (
 
 def main():
 
-    # 1. Load & Preprocess Data
+    # ✅ 1. Load & Preprocess Data
     df = load_data("data/TreatmentCostAmount.csv")
     df = handle_missing_values(df)
 
     X, y = get_features_and_target(df)
+
     X_train, X_test, y_train, y_test, preprocessor = split_and_preprocess(X, y)
 
-    # 2. Train Models
-    lr_model = build_linear_regression()
-    lasso_model = build_lasso()
-    ridge_model = ridge_regression_model()   
+    # ✅ 2. Train Models (UPDATED ✅)
+    lr_model = get_model("linear")
+    lasso_model = get_model("lasso")
+    ridge_model = get_model("ridge")
 
     lr_model.fit(X_train, y_train)
     lasso_model.fit(X_train, y_train)
-    ridge_model.fit(X_train, y_train)       
+    ridge_model.fit(X_train, y_train)
 
-    # 3. Evaluate Models
+    # ✅ 3. Predictions
     lr_pred = lr_model.predict(X_test)
     lasso_pred = lasso_model.predict(X_test)
-    ridge_pred = ridge_model.predict(X_test) 
+    ridge_pred = ridge_model.predict(X_test)
 
+    # ✅ 4. Evaluation
     regression_metrics(y_test, lr_pred, "Linear Regression")
     regression_metrics(y_test, lasso_pred, "Lasso Regression")
     regression_metrics(y_test, ridge_pred, "Ridge Regression")
@@ -52,69 +52,67 @@ def main():
     plot_actual_vs_predicted(y_test, lasso_pred, "Lasso Regression")
     plot_actual_vs_predicted(y_test, ridge_pred, "Ridge Regression")
 
-    plot_residuals(y_test, lr_pred, "Residual Plot - Linear Regression")
-    plot_residuals(y_test, lasso_pred, "Residual Plot - Lasso Regression")
-    plot_residuals(y_test, ridge_pred, "Residual Plot - Ridge Regression")
+    plot_residuals(y_test, lr_pred, "Residual Plot - Linear")
+    plot_residuals(y_test, lasso_pred, "Residual Plot - Lasso")
+    plot_residuals(y_test, ridge_pred, "Residual Plot - Ridge")
 
+    # ✅ Feature Importance
     feature_names = preprocessor.get_feature_names_out()
     plot_feature_importance(lasso_model.coef_, feature_names)
-    plot_feature_importance(ridge_model.coef_, feature_names)  
+    plot_feature_importance(ridge_model.coef_, feature_names)
 
-    # 4. User Input → Prediction
-    print("\nEnter customer details to predict Treatment Cost:")
+    # ✅ 5. USER INPUT (UPDATED ✅)
+
+    print("\nEnter patient details:")
 
     try:
         age = int(input("Age: "))
-        sex_input = input("Sex (male/female): ").strip().lower()
         bmi = float(input("BMI: "))
-        smoker_input = input("Smoker (yes/no): ").strip().lower()
-        region_input = input("Region (north/south/east/west): ").strip().lower()
-        disease_input = input(
-            "Previous Disease (none/diabetes/heart/other): "
-        ).strip().lower()
+        steps = int(input("Daily Steps: "))
+        sleep = float(input("Sleep Hours: "))
+        stress = int(input("Stress Level (1-10): "))
+        prev_cost = float(input("Previous Year Cost: "))
 
-        # Validation
-        if sex_input not in ["male", "female"]:
-            raise ValueError("Gender must be male/female")
-        if smoker_input not in ["yes", "no"]:
-            raise ValueError("Smoker must be yes/no")
-        if region_input not in ["north", "south", "east", "west"]:
-            raise ValueError("Region must be north/south/east/west")
+        gender = input("Gender (Male/Female): ").strip()
+        smoker = input("Smoker (Yes/No): ").strip()
+        insurance = input("Insurance Type (Private/Government/None): ").strip()
+        city = input("City Type (Urban/Semi-Urban/Rural): ").strip()
+        activity = input("Activity Level (Low/Medium/High): ").strip()
 
-        disease_map = {
-            "none": 0,
-            "diabetes": 1,
-            "heart": 2,
-            "other": 3
-        }
-
-        if disease_input not in disease_map:
-            raise ValueError("Disease must be none / diabetes / heart / other")
-
-        # Numeric Encoding (MATCH CSV)
-        sex = 1 if sex_input == "male" else 0
-        smoker = 1 if smoker_input == "yes" else 0
-        region = {"north": 0, "south": 1, "east": 2, "west": 3}[region_input]
-        disease = disease_map[disease_input]
-
-    except ValueError as e:
-        print(f"\nInvalid input: {e}")
+    except ValueError:
+        print("❌ Invalid input")
         return
 
-    # Predict Treatment Cost (Using Ridge)
+    # ✅ Create input dataframe (MATCH DATASET ✅)
     new_data = pd.DataFrame({
         "age": [age],
-        "sex": [sex],
         "bmi": [bmi],
+        "daily_steps": [steps],
+        "sleep_hours": [sleep],
+        "stress_level": [stress],
+        "doctor_visits_per_year": [2],
+        "hospital_admissions": [0],
+        "medication_count": [1],
+        "insurance_coverage_pct": [70],
+        "previous_year_cost": [prev_cost],
+        "diabetes": [0],
+        "hypertension": [0],
+        "heart_disease": [0],
+        "asthma": [0],
+        "gender": [gender],
         "smoker": [smoker],
-        "region": [region],
-        "disease": [disease]
+        "insurance_type": [insurance],
+        "city_type": [city],
+        "physical_activity_level": [activity]
     })
 
+    # ✅ Transform using SAME pipeline
     new_data_processed = preprocessor.transform(new_data)
+
+    # ✅ Predict (USE BEST MODEL ✅)
     predicted_cost = ridge_model.predict(new_data_processed)[0]
 
-    print(f"\nEstimated Treatment Cost: ₹ {predicted_cost:,.2f}")
+    print(f"\n💰 Estimated Treatment Cost: ₹ {predicted_cost:,.2f}")
 
 
 if __name__ == "__main__":
