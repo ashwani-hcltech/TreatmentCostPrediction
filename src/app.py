@@ -24,8 +24,8 @@ st.set_page_config(
 )
 
 st.title("💊 Medical Treatment Cost Prediction")
-st.write("Predict estimated treatment cost using Ridge Regression")
-
+# st.write("Predict estimated treatment cost using Ridge Regression")
+st.write("Predict estimated treatment cost ")
 
 # ------------------------------
 # Sidebar Navigation
@@ -137,7 +137,7 @@ elif option == "EDA Dashboard":
     st.pyplot(fig)
 
     # Smoker vs Cost
-    st.subheader("🚬 Smoker vs Cost")
+    st.subheader(" Smoker vs Cost")
     avg_cost = df.groupby("smoker")["annual_medical_cost"].mean()
     fig, ax = plt.subplots()
     ax.bar(avg_cost.index, avg_cost.values)
@@ -154,7 +154,7 @@ elif option == "EDA Dashboard":
     st.pyplot(fig)
 
     
-    st.subheader("🏋️ BMI vs Cost")
+    st.subheader(" BMI vs Cost")
     fig, ax = plt.subplots()
     ax.scatter(df["bmi"], df["annual_medical_cost"], alpha=0.5)
     ax.set_xlabel("BMI")
@@ -188,7 +188,7 @@ elif option == "EDA Dashboard":
     ax.set_title("Activity Impact on Cost")
     st.pyplot(fig)
 
-    st.subheader("😴 Sleep Hours vs Cost")
+    st.subheader(" Sleep Hours vs Cost")
     fig, ax = plt.subplots()
     ax.scatter(df["sleep_hours"], df["annual_medical_cost"], alpha=0.5)
     ax.set_xlabel("Sleep Hours")
@@ -196,7 +196,7 @@ elif option == "EDA Dashboard":
     ax.set_title("Sleep vs Cost")
     st.pyplot(fig)
 
-    st.subheader("😟 Stress Level vs Cost")
+    st.subheader(" Stress Level vs Cost")
     fig, ax = plt.subplots()
     ax.scatter(df["stress_level"], df["annual_medical_cost"], alpha=0.5)
     ax.set_xlabel("Stress Level")
@@ -206,7 +206,7 @@ elif option == "EDA Dashboard":
 
 
     # Correlation Heatmap
-    st.subheader("🔥 Correlation Heatmap")
+    st.subheader(" Correlation Heatmap")
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.heatmap(df.corr(numeric_only=True), cmap="coolwarm", ax=ax)
     st.pyplot(fig)
