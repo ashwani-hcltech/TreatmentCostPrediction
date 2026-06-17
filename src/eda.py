@@ -12,17 +12,17 @@ def run_eda():
     df = load_data("data/TreatmentCostAmount.csv")
     df = handle_missing_values(df)
 
-    print("\n✅ Running Exploratory Data Analysis...")
+    print("\n Running Exploratory Data Analysis...")
 
-    # ✅ Target distribution
+    #  Target distribution
     plot_cost_distribution(df)
 
-    # ✅ Key relationships
+    #  Key relationships
     plot_smoker_vs_cost(df)
     plot_age_vs_cost(df)
     plot_age_group_vs_cost(df)
 
-    # ✅ New disease analysis (UPDATED ✅)
+    #  New disease analysis 
     plot_disease_impact(df)
 
 

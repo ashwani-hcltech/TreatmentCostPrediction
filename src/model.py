@@ -1,12 +1,12 @@
 from sklearn.linear_model import LinearRegression, Lasso, Ridge
 
 
-# ✅ Linear Regression
+#  Linear Regression
 def build_linear_regression():
     return LinearRegression()
 
 
-# ✅ Lasso (Feature selection model)
+#  Lasso (Feature selection model)
 def build_lasso():
     return Lasso(
         alpha=0.01,
@@ -15,7 +15,7 @@ def build_lasso():
     )
 
 
-# ✅ Ridge (Best for multicollinearity)
+#  Ridge (Best for multicollinearity)
 def build_ridge(alpha=1.0):
     return Ridge(
         alpha=alpha,
@@ -23,7 +23,7 @@ def build_ridge(alpha=1.0):
     )
 
 
-# ✅ Model selector (NEW ✅ IMPORTANT)
+#  Model selector 
 def get_model(model_type="linear"):
     
     if model_type == "linear":

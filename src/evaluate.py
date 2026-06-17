@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 
-# ✅ Metrics
+#  Metrics
 def regression_metrics(y_true, y_pred, model_name):
     print(f"\n====== {model_name} Evaluation ======")
     print(f"MAE  : {mean_absolute_error(y_true, y_pred):.2f}")
@@ -13,7 +13,7 @@ def regression_metrics(y_true, y_pred, model_name):
     print(f"R²   : {r2_score(y_true, y_pred):.4f}")
 
 
-# ✅ Actual vs Predicted
+#  Actual vs Predicted
 def plot_actual_vs_predicted(y_true, y_pred, title):
     plt.figure(figsize=(6, 5))
     sns.scatterplot(x=y_true, y=y_pred)
@@ -29,12 +29,12 @@ def plot_actual_vs_predicted(y_true, y_pred, title):
     plt.show()
 
 
-# ✅ Feature Importance (FIXED ✅)
+#  Feature Importance 
 def plot_feature_importance(coefficients, feature_names):
 
     importance = abs(coefficients)
 
-    # ✅ Ensure same length
+    #  Ensure same length
     min_len = min(len(importance), len(feature_names))
     importance = importance[:min_len]
     feature_names = feature_names[:min_len]
@@ -49,7 +49,7 @@ def plot_feature_importance(coefficients, feature_names):
     plt.show()
 
 
-# ✅ Residual Plot
+#  Residual Plot
 def plot_residuals(y_true, y_pred, title="Residual Plot"):
 
     residuals = y_true - y_pred

@@ -6,16 +6,16 @@ from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 
 
-# ✅ Load Data
+#  Load Data
 def load_data(path):
     df = pd.read_csv(path)
     df.columns = df.columns.str.strip()
     return df
 
 
-# ✅ Handle Missing Values (Improved)
+#  Handle Missing Values 
 def handle_missing_values(df):
-    print("✅ Null values before:\n", df.isnull().sum().to_string())
+    print(" Null values before:\n", df.isnull().sum().to_string())
 
     # Separate columns
     num_cols = df.select_dtypes(include=["int64", "float64"]).columns
@@ -36,7 +36,7 @@ def handle_missing_values(df):
     return df
 
 
-# ✅ Feature Selection (UPDATED FOR YOUR DATASET)
+#  Feature Selection (UPDATED FOR YOUR DATASET)
 def get_features_and_target(df):
 
     features = [
@@ -67,7 +67,7 @@ def get_features_and_target(df):
     return X, y
 
 
-# ✅ Split + Preprocessing Pipeline (BEST PRACTICE ✅)
+#  Split + Preprocessing Pipeline 
 def split_and_preprocess(X, y):
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -78,26 +78,26 @@ def split_and_preprocess(X, y):
     num_cols = X.select_dtypes(include=["int64", "float64"]).columns
     cat_cols = X.select_dtypes(include=["object"]).columns
 
-    # ✅ Numeric pipeline
+    #  Numeric pipeline
     numeric_pipeline = Pipeline([
         ("imputer", SimpleImputer(strategy="median")),
         ("scaler", StandardScaler())
     ])
 
-    # ✅ Categorical pipeline
+    #  Categorical pipeline
     categorical_pipeline = Pipeline([
         ("imputer", SimpleImputer(strategy="most_frequent")),
         # One-hot encoding inside pipeline
         ("onehot", __import__("sklearn").preprocessing.OneHotEncoder(drop="first", handle_unknown="ignore"))
     ])
 
-    # ✅ Combine pipelines
+    #  Combine pipelines
     preprocessor = ColumnTransformer([
         ("num", numeric_pipeline, num_cols),
         ("cat", categorical_pipeline, cat_cols)
     ])
 
-    # ✅ Fit & transform
+    #  Fit & transform
     X_train = preprocessor.fit_transform(X_train)
     X_test = preprocessor.transform(X_test)
 

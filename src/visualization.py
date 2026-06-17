@@ -3,7 +3,7 @@ import seaborn as sns
 import pandas as pd
 
 
-# ✅ Target Distribution
+#  Target Distribution
 def plot_cost_distribution(df):
     plt.figure()
     plt.hist(df["annual_medical_cost"], bins=30)
@@ -13,7 +13,7 @@ def plot_cost_distribution(df):
     plt.show()
 
 
-# ✅ Smoker vs Cost
+#  Smoker vs Cost
 def plot_smoker_vs_cost(df):
     avg_cost = df.groupby("smoker")["annual_medical_cost"].mean()
 
@@ -27,7 +27,7 @@ def plot_smoker_vs_cost(df):
     plt.show()
 
 
-# ✅ Disease Impact (UPDATED ✅)
+#  Disease Impact 
 def plot_disease_impact(df):
 
     diseases = ["diabetes", "hypertension", "heart_disease", "asthma"]
@@ -43,7 +43,7 @@ def plot_disease_impact(df):
     plt.show()
 
 
-# ✅ Actual vs Predicted
+#  Actual vs Predicted
 def plot_actual_vs_predicted(y_test, y_pred):
     plt.figure()
     plt.scatter(y_test, y_pred, alpha=0.5)
@@ -61,7 +61,7 @@ def plot_actual_vs_predicted(y_test, y_pred):
     plt.show()
 
 
-# ✅ Residual Plot
+#  Residual Plot
 def plot_residuals(y_test, y_pred):
     residuals = y_test - y_pred
 
@@ -75,12 +75,12 @@ def plot_residuals(y_test, y_pred):
     plt.show()
 
 
-# ✅ Feature Importance (SAFE ✅)
+#  Feature Importance 
 def plot_feature_importance(coefficients, feature_names):
 
     importance = abs(coefficients)
 
-    # ✅ Fix mismatch
+    #  Fix mismatch
     min_len = min(len(importance), len(feature_names))
     importance = importance[:min_len]
     feature_names = feature_names[:min_len]
@@ -95,7 +95,7 @@ def plot_feature_importance(coefficients, feature_names):
     plt.show()
 
 
-# ✅ Age vs Cost
+#  Age vs Cost
 def plot_age_vs_cost(df):
     plt.figure()
     plt.scatter(df["age"], df["annual_medical_cost"], alpha=0.5)
@@ -106,7 +106,7 @@ def plot_age_vs_cost(df):
     plt.show()
 
 
-# ✅ Age Group vs Cost
+#  Age Group vs Cost
 def plot_age_group_vs_cost(df):
 
     age_bins = [0, 18, 30, 45, 60, 100]

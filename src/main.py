@@ -21,7 +21,7 @@ from evaluate import (
 
 def main():
 
-    # ✅ 1. Load & Preprocess Data
+    #  1. Load & Preprocess Data
     df = load_data("data/TreatmentCostAmount.csv")
     df = handle_missing_values(df)
 
@@ -29,7 +29,7 @@ def main():
 
     X_train, X_test, y_train, y_test, preprocessor = split_and_preprocess(X, y)
 
-    # ✅ 2. Train Models (UPDATED ✅)
+    #  2. Train Models 
     lr_model = get_model("linear")
     lasso_model = get_model("lasso")
     ridge_model = get_model("ridge")
@@ -38,12 +38,12 @@ def main():
     lasso_model.fit(X_train, y_train)
     ridge_model.fit(X_train, y_train)
 
-    # ✅ 3. Predictions
+    #  3. Predictions
     lr_pred = lr_model.predict(X_test)
     lasso_pred = lasso_model.predict(X_test)
     ridge_pred = ridge_model.predict(X_test)
 
-    # ✅ 4. Evaluation
+    #  4. Evaluation
     regression_metrics(y_test, lr_pred, "Linear Regression")
     regression_metrics(y_test, lasso_pred, "Lasso Regression")
     regression_metrics(y_test, ridge_pred, "Ridge Regression")
@@ -56,12 +56,12 @@ def main():
     plot_residuals(y_test, lasso_pred, "Residual Plot - Lasso")
     plot_residuals(y_test, ridge_pred, "Residual Plot - Ridge")
 
-    # ✅ Feature Importance
+    #  Feature Importance
     feature_names = preprocessor.get_feature_names_out()
     plot_feature_importance(lasso_model.coef_, feature_names)
     plot_feature_importance(ridge_model.coef_, feature_names)
 
-    # ✅ 5. USER INPUT (UPDATED ✅)
+    #  5. USER INPUT 
 
     print("\nEnter patient details:")
 
@@ -83,7 +83,7 @@ def main():
         print("❌ Invalid input")
         return
 
-    # ✅ Create input dataframe (MATCH DATASET ✅)
+    #  Create input dataframe 
     new_data = pd.DataFrame({
         "age": [age],
         "bmi": [bmi],
@@ -106,10 +106,10 @@ def main():
         "physical_activity_level": [activity]
     })
 
-    # ✅ Transform using SAME pipeline
+    #  Transform using SAME pipeline
     new_data_processed = preprocessor.transform(new_data)
 
-    # ✅ Predict (USE BEST MODEL ✅)
+    #  Predict 
     predicted_cost = ridge_model.predict(new_data_processed)[0]
 
     print(f"\n💰 Estimated Treatment Cost: ₹ {predicted_cost:,.2f}")
