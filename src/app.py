@@ -23,7 +23,7 @@ st.set_page_config(
     layout="centered"
 )
 
-st.title("💊 Medical Treatment Cost Prediction")
+st.title(" Medical Treatment Cost Prediction")
 # st.write("Predict estimated treatment cost using Ridge Regression")
 st.write("Predict estimated treatment cost ")
 
@@ -59,7 +59,7 @@ model, preprocessor = load_and_train_model()
 
 
 # ==============================
-# ✅ PREDICTION SECTION
+#  PREDICTION SECTION
 # ==============================
 if option == "Prediction":
 
@@ -113,7 +113,7 @@ if option == "Prediction":
 
 
 # ==============================
-# ✅ EDA DASHBOARD SECTION
+#  EDA DASHBOARD SECTION
 # ==============================
 elif option == "EDA Dashboard":
 
@@ -213,7 +213,7 @@ elif option == "EDA Dashboard":
 
 
 # ==============================
-# ✅ BULK PREDICTION SECTION
+#  BULK PREDICTION SECTION
 # ==============================
 elif option == "Bulk Prediction":
 
