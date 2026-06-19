@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import numpy as np
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from preprocess import (
     load_data,
@@ -52,10 +54,10 @@ def load_and_train_model():
     model = get_model("ridge")
     model.fit(X_train, y_train)
 
-    return model, preprocessor
+    return model, preprocessor, X_test, y_test
 
 
-model, preprocessor = load_and_train_model()
+model, preprocessor, X_test, y_test = load_and_train_model()
 
 
 # ==============================
@@ -212,6 +214,57 @@ elif option == "EDA Dashboard":
     st.pyplot(fig)
 
 
+   # ==============================
+    #  MODEL EVALUATION 
+    # ==============================
+    st.subheader("📈 Model Evaluation Metrics")
+
+    y_pred = model.predict(X_test)
+
+    mae = mean_absolute_error(y_test, y_pred)
+    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+    r2 = r2_score(y_test, y_pred)
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("MAE", f"{mae:.2f}")
+    col2.metric("RMSE", f"{rmse:.2f}")
+    col3.metric("R² Score", f"{r2:.4f}")
+
+    #  Actual vs Predicted
+    st.subheader("📊 Actual vs Predicted")
+
+    fig, ax = plt.subplots()
+    ax.scatter(y_test, y_pred, alpha=0.5)
+
+    ax.plot(
+        [y_test.min(), y_test.max()],
+        [y_test.min(), y_test.max()],
+        color='red', linestyle='--'
+    )
+
+    ax.set_xlabel("Actual Cost")
+    ax.set_ylabel("Predicted Cost")
+
+    st.pyplot(fig)
+
+    #  Residual Plot
+    st.subheader("📉 Residual Plot")
+
+    residuals = y_test - y_pred
+
+    fig, ax = plt.subplots()
+    ax.scatter(y_pred, residuals, alpha=0.5)
+
+    ax.axhline(y=0, color='red', linestyle='--')
+
+    ax.set_xlabel("Predicted Cost")
+    ax.set_ylabel("Residuals")
+
+    st.pyplot(fig)
+
+
+
 # ==============================
 #  BULK PREDICTION SECTION
 # ==============================
@@ -249,7 +302,7 @@ elif option == "Bulk Prediction":
 
             df["Predicted_Treatment_Cost"] = predictions
 
-            st.subheader("✅ Prediction Results")
+            st.subheader(" Prediction Results")
             st.dataframe(df.head())
 
             csv = df.to_csv(index=False).encode("utf-8")
